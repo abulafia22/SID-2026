@@ -52,6 +52,91 @@
         <a href="https://www.klicksafe.de/sid" class="btn" target="_blank">Mehr Infos bei klicksafe.de</a>
     </p>
 
+    <section id="quiz-container" style="margin-top: 40px; padding: 20px; background: #f9f9f9; border: 2px dashed #004a99; border-radius: 8px;">
+    <h3 style="color: #004a99; text-align: center;">Bist du jetzt ein Phishing-Experte? 🛡️</h3>
+    <p style="text-align: center;">Teste dein Wissen in unserem Kurz-Quiz:</p>
+    
+    <div id="quiz-content">
+        <div id="question-box">
+            <p id="question-text" style="font-weight: bold; font-size: 1.1em;"></p>
+            <div id="options-container"></div>
+        </div>
+        <p id="feedback" style="margin-top: 15px; font-weight: bold; min-height: 1.5em;"></p>
+        <button id="next-btn" style="display: none; background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Nächste Frage</button>
+    </div>
+</section>
+
+<script>
+    const questions = [
+        {
+            q: "Was ist der sicherste Weg, um zu prüfen, wohin ein Link in einer E-Mail wirklich führt?",
+            a: ["Auf den Link klicken und schauen, was passiert.", "Mit der Maus über den Link fahren (Hover), ohne zu klicken.", "Sich auf das Logo in der E-Mail verlassen."],
+            correct: 1,
+            info: "Richtig! Der 'Hover-Trick' zeigt dir die echte Ziel-URL unten links im Browser an."
+        },
+        {
+            q: "Warum nutzen Hacker oft Drohungen wie 'Dein Account wird in 24h gelöscht'?",
+            a: ["Weil sie sehr höfliche Menschen sind.", "Um dich unter Zeitdruck zu setzen, damit du unvorsichtig wirst.", "Weil das Gesetz das so vorschreibt."],
+            correct: 1,
+            info: "Korrekt. Zeitdruck ist eine psychologische Falle. Bleib immer ruhig!"
+        },
+        {
+            q: "Was solltest du tun, wenn du eine verdächtige E-Mail von deiner 'Bank' oder 'Schule' erhältst?",
+            a: ["Die offizielle Webseite manuell im Browser eingeben und dort nachsehen.", "Sofort das Passwort ändern, indem du dem Link in der Mail folgst.", "Die E-Mail an alle Freunde weiterleiten, um sie zu warnen."],
+            correct: 0,
+            info: "Genau. Nutze immer bekannte, offizielle Wege und niemals Links aus unaufgeforderten E-Mails."
+        }
+    ];
+
+    let currentQ = 0;
+
+    function loadQuestion() {
+        const q = questions[currentQ];
+        document.getElementById('question-text').innerText = q.q;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        document.getElementById('feedback').innerText = '';
+        document.getElementById('next-btn').style.display = 'none';
+
+        q.a.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.style = "display: block; width: 100%; text-align: left; margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; background: white;";
+            btn.onclick = () => checkAnswer(index);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        const q = questions[currentQ];
+        const feedback = document.getElementById('feedback');
+        if (choice === q.correct) {
+            feedback.innerText = "✅ " + q.info;
+            feedback.style.color = "#27ae60";
+        } else {
+            feedback.innerText = "❌ Das war nicht ganz richtig. " + q.info;
+            feedback.style.color = "#e74c3c";
+        }
+        
+        if (currentQ < questions.length - 1) {
+            document.getElementById('next-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').innerText = "Quiz beendet!";
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('next-btn').onclick = () => {
+                alert("Super! Du bist nun besser gegen Phishing geschützt. Teile dein Wissen mit anderen!");
+            };
+        }
+    }
+
+    document.getElementById('next-btn').onclick = () => {
+        currentQ++;
+        loadQuestion();
+    };
+
+    loadQuestion();
+</script>
+
     <footer>
         &copy; 2026 Safer Internet Day Projekt - Für ein sichereres Netz für alle.
     </footer>
